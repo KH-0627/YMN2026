@@ -1489,7 +1489,8 @@ function drawPhaseHUD(W,H){
   const centerPos=phaseHUD.fromIdx+(phaseHUD.idx-phaseHUD.fromIdx)*ease;
   // 表示サイズはキャンバス解像度に比例（録画で高解像度になっても見た目の大きさを一定に保つ）
   const narrow=W<640;
-  const bh=(narrow?32:38)*s, mainFs=Math.round((narrow?18:22)*s), nbFs=Math.round(14*s);
+  const mobileHUD=W<640;
+  const bh=mobileHUD?42*s:(narrow?32:38)*s, mainFs=mobileHUD?20:Math.round((narrow?18:22)*s), nbFs=mobileHUD?15:Math.round(14*s);
   ctx3.save();ctx3.textAlign="center";ctx3.textBaseline="middle";
   // 中央（現在＝centerPosに最も近いフェーズ）に合わせた背景帯
   const centeredIdx=Math.max(0,Math.min(P.length-1,Math.round(centerPos)));
@@ -1515,7 +1516,7 @@ function drawPhaseHUD(W,H){
   // ===== フェーズの演技説明コメント（フェーズ名の下に表示・自動折り返し） =====
   const comment=(P[state.curPhase]&&P[state.curPhase].comment||"").trim();
   if(comment){
-    const cfs=Math.round((narrow?12:14)*s), lh=cfs*1.32, maxW=Math.min(W*0.9, 1200*s);
+    const cfs=mobileHUD?15:Math.round((narrow?12:14)*s), lh=cfs*1.32, maxW=Math.min(W*0.92, 1200*s);
     ctx3.font=`${cfs}px 'Segoe UI',sans-serif`;
     const lines=wrapTextLines(comment,maxW), maxLines=(narrow||H<500)?2:3, shown=lines.slice(0,maxLines);
     if(lines.length>maxLines)shown[maxLines-1]=shown[maxLines-1].replace(/…?$/,'…');
